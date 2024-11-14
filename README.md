@@ -6,3 +6,4 @@ Team members:
 - Ayushi Dosieah
 - Myriam Labissière
 - Sophia Hopkins
+- Rayen Ben Tamarzizt
