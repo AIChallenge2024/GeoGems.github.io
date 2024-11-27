@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+  /*background: #FEF7FF; --> when apply colours the nav bar too, fix later; for now not adding this*/
+}
+
+.heading{
+  padding: 50px;
+  font-size: 20px;
+  text-align: center;
+  padding: 50px;
+  text-transform: uppercase;
+}
+
+.subheading{ /*maybe reduce the space between subheading & text; haven't figure it out */
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin: 40px; 
+}
+
+.text{
+  margin: 40px;
+  background-color: #e4e1e1;
+  padding: 40px;
+}
