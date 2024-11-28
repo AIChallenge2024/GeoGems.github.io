@@ -11,9 +11,10 @@
 
 .heading{
   padding: 50px;
-  font-size: 20px;
+  font-size: 30px;
   text-align: center;
   padding: 50px;
+  padding-bottom: 10px;
   text-transform: uppercase;
 }
 
@@ -28,4 +29,56 @@
   margin: 40px;
   background-color: #e4e1e1;
   padding: 40px;
+}
+
+.text h3{
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.text p{
+  word-spacing: 0.3ch;
+}
+
+.mission{
+  font-weight: bold;
+}
+.subheading_2{
+  font-size: 30px;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 40px;
+}
+
+.team{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  justify-items: center;
+  margin-top: 4rem auto;
+}
+
+.team .box:nth-child(4) {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+
+.team .box:nth-child(5) {
+  grid-column: 2 / span 2; 
+  grid-row: 2;
+}
+
+.box img{
+  width: 200px;
+  height: 200px;
+  border-radius: 40%;
+  object-fit: cover;
+}
+
+.box p{
+  font-size: 17px;
+  margin: 0.5rem;
+  text-align: center;
 }
