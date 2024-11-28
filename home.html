@@ -4,28 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoGems</title>
-    <link rel="stylesheet" href="nav_bar.css">
+    <link rel="stylesheet" href="home.css">
     <link rel="icon" href="https://avatars.githubusercontent.com/u/188487384?s=400&u=47e89d2ae74714e87930889b618f5e64d41af4fa&v=4" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar">
         <input type="checkbox" id="check">
         <label for="check" class="checkbtn">
             <i class="fas fa-bars"></i>
         </label>
-        <img class="logo" src="Pictures/logo_with_title.png" alt = logo style="width:75px;height:80px;margin-left: 50px;"></img>
+        <img class="logo" src="Pictures/logo_with_title.png" alt="logo">
         <ul>
-            <li><a href="/home.html">Home</a></li>
-            <li><a href="/map.html">Map</a></li>
-            <li><a href="/hidden_gems.html">Hidden Gems</a></li>
-            <li><a href="/about_us.html">About us</a></li>
+            <li><a href="/home.html" class="blue_btn">Home</a></li>
+            <li><a href="/map.html" class="blue_btn">Map</a></li>
+            <li><a href="/hidden_gems.html"class="blue_btn">Hidden Gems</a></li>
+            <li><a href="/about_us.html" class="blue_btn">About us</a></li>
             <li><a href="/log_in.html" class="purple_btn">Log in</a></li>
             <li><a href="/sign_up.html" class="purple_btn">Sign up</a></li>
         </ul>
     </nav>
-    <section>
 
+    <!-- Main Content -->
+    <section class="hero">
+        <video autoplay muted loop class="hero-video">
+           <!--video will be added here -> <source src="" type="video/mp4">-->
+        </video>
+        <div class="hero-text">
+            <h1>GeoGems</h1>
+            <h2>Anywhere, Anytime</h2>
+        </div>
+    </section>
+
+    <!-- Interactive Map Sections -->
+    <section class="map-section">
+        <div class="map-box blue">
+            <h2>Interactive Map</h2>
+        </div>
+        <div class="map-box coral">
+            <h2>Interactive Map</h2>
+        </div>
     </section>
 </body>
 </html>
