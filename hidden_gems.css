@@ -7,6 +7,7 @@
 
 /*For the hidden gems boxes*/
 .gems-container{
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;  
@@ -52,7 +53,7 @@
     color: #fff;
 }
 
-/*Buttons on top of the hidden gems*/
+/*Buttons for categories of hidden gems*/
 
 .button-container {
     display: flex; /* Makes the buttons align horizontally */
@@ -65,16 +66,37 @@
 
 .rounded-button {
     padding: 10px 20px;
-    background-color: #65558F; /* Blue */
+    background-color: #65558F; 
     color: white;
     border: none;
     border-radius: 10px; /* Adjust the value for more or less rounding */
     margin: 0;
     cursor: pointer;
-    flex-wrap: nowrap;
   }
   
   .rounded-button:hover {
-    background-color: #433468; /* Darker blue for hover effect */
+    background-color: #433468; /* Darker purple for hover effect */
   }
-  
+
+/*Save button*/
+
+.save-button {
+    position: absolute;
+    transform: translate(-120%, 20%); /* Center the button */
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    border-color: none;
+    height: 50px;
+    width: 50px;
+    display:inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    text-decoration: none;
+}
+
+.save-button:hover {
+    background-color: #bdbdbd; /* Darker grey for hover effect */
+  }
