@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="nav_bar.css">
     <link rel="icon" href="https://avatars.githubusercontent.com/u/188487384?s=400&u=47e89d2ae74714e87930889b618f5e64d41af4fa&v=4" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="login_signup.css">
+    
 </head>
 <body>
     <nav class="navbar">
@@ -24,8 +26,37 @@
             <li><a href="/sign_up.html" class="purple_btn">Sign up</a></li>
         </ul>
     </nav>
-    <section>
+    <div class="wrapper">
+        <form action="">
+            <h1>Sign up</h1>
+            <div class="input-box">
+                <input type="text" placeholder="Name" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <input type="text" placeholder="Email" required>
+                <i class='bx bxs-envelop'></i>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            <div class="input-box">
+                <input type="password" placeholder="Confirm Password" required>
+                <i class='bx bxs-lock-alt' ></i>
+            </div>
+            <div class="remember-forgot">
+                <label><input type="checkbox"> Accept terms and Conditions </label>
+            </div>
+            <div class="remember-forgot">
+                <label><input type="checkbox"> Daily notifications and updates</label>
+            </div>
 
-    </section>
+            <button type="submit" class="btn">Create your account</button>
+
+            <div class="signup-link">
+                <p>Already have an acconut? <a class="loginlink" href="/log_in.html">Login!</a></p>
+        </form>
+    </div>
 </body>
 </html>
