@@ -47,12 +47,17 @@ function initMap(){
         const lat = event.latLng.lat();
         const lng = event.latLng.lng();
         const infobox = document.getElementById("info");
+        const infoContent = document.getElementById("info_content");
         infobox.style.display = "block"
-        infobox.innerHTML = `
+        infoContent.innerHTML = `
           <h2>Location Details</h2>
           <p>Latitude: ${lat}</p>
           <p>Longitude: ${lng}</p>
           <p>Additional information can go here.</p>
         `;
+      });
+
+      document.getElementById("close_btn").addEventListener("click", () => {
+        document.getElementById("info").style.display = "none"; // Hide the info div
       });
 }
