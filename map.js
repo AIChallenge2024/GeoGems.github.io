@@ -1,6 +1,6 @@
 
 async function getSummary(locationName) {
-  const apiUrl = 'https://api.openai.com/v1/completions';
+  const apiUrl = '';
   const apiKey = 'api-key'; //pi key goes here but its not letting me push because git violation
 
   const requestBody = {
