@@ -1,7 +1,7 @@
 
 async function getSummary(locationName) {
   const apiUrl = 'https://api.openai.com/v1/completions';
-  const apiKey = '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';
+  const apiKey = 'api-key'; //pi key goes here but its not letting me push because git violation
 
   const requestBody = {
     model: 'text-davinci-003', 
