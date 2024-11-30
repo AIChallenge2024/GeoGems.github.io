@@ -1,1 +1,1 @@
-const apikey = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAdJyD_5IF2W5RlHYDxinctnl6MzMw5wgc&callback=initMap"
+const apikey = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAdJyD_5IF2W5RlHYDxinctnl6MzMw5wgc&callback=initMap&loading=async"
