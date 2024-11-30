@@ -1,3 +1,32 @@
+
+async function getSummary(locationName) {
+  const apiUrl = 'https://api.openai.com/v1/completions';
+  const apiKey = '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';
+
+  const requestBody = {
+    model: 'text-davinci-003', 
+    promt: `Summarize this place: ${locationName}`,
+    max_words: 100,
+  }
+
+  const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({ text: locationName })
+  });
+
+  const data = await response.json();
+
+  if(data.choices && data.choices.lenght >0) {
+    return data.choices[0].text.trim();
+  } else{
+  return data.summary || 'No summary available.';
+  }
+}
+
 function initMap(){
     //Map Options
     var options = {
@@ -48,13 +77,36 @@ function initMap(){
         const lng = event.latLng.lng();
         const infobox = document.getElementById("info");
         const infoContent = document.getElementById("info_content");
-        infobox.style.display = "block"
-        infoContent.innerHTML = `
-          <h2>Location Details</h2>
-          <p>Latitude: ${lat}</p>
-          <p>Longitude: ${lng}</p>
-          <p>Additional information can go here.</p>
-        `;
+        
+        // Use reverse geocoding to get the place name from the coordinates
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ location: { lat: lat, lng: lng } }, async function (results, status) {
+            if (status === 'OK' && results[0]) {
+                const locationName = results[0].formatted_address; // Get the location name
+                // Fetch summary using the location name
+                const summary = await getSummary(locationName);
+
+        
+        
+                infobox.style.display = "block"
+                infoContent.innerHTML = `
+                  <h2>Location Details</h2>
+                  <p>Latitude: ${lat}</p>
+                  <p>Longitude: ${lng}</p>
+                  <p><strong>Place:</strong> ${locationName}</p>
+                  <p><strong>Summary:</strong> ${summary}</p>
+                  <p>Additional information can go here.</p>
+                `;
+            } else {
+              infobox.style.display = "block";
+              infoContent.innerHTML = `
+                  <h2>Location Details</h2>
+                  <p>Latitude: ${lat}</p>
+                  <p>Longitude: ${lng}</p>
+                  <p>Unable to retrieve location name.</p>
+              `;
+            }
+        });
       });
 
       document.getElementById("close_btn").addEventListener("click", () => {
