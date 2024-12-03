@@ -8,7 +8,6 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/188487384?s=400&u=47e89d2ae74714e87930889b618f5e64d41af4fa&v=4" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="hidden_gems.css">
-    <script src="hidden_gems.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -56,10 +55,12 @@
                     </div>
                     <div id="locations"></div>
                 </div>
+                </body>
+        </div>
                       
           <p style="margin-top: 50px; margin-left: 180px;">26 results</p>
           <hr style="border: 1px solid #000; margin: 20px 0; margin-left: 180px; margin-right: 180px; margin-top: 5px;">
-            <div class="gems-container" style="margin-top: 1px;">
+            <div id="gems-container">
                 <div class="flex-box">
                     <img src="Pictures/anafiotika.png">
                     <!--save button-->
@@ -137,29 +138,40 @@
                         <hr>
                         <p>Nestled at the north slope of the Acropolis, Anafiotika is one of Athens’ most scenic neighborhoods. Lined with white-washed houses resembling the Cycladic architecture design, this district looks nothing like the Greek capital.</p>
                     </div>
-                </div>    
-                <div id="gems-list"></div>
+                </div>   
+            </div> 
     </section>
     <!-- button library thing-->
+    <script src="hidden_gems.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <script>
-        fetch('https://localhost:3000/gems')
-            .then(response => response.json())
-            .then(data => {
-                const gemsList = document.getElementById('gems-list');
-                gemsList.innerHTML = ''; // Clear existing content
-                data.forEach(gem => {
-                    const gemDiv = document.createElement('div');
-                    gemDiv.innerHTML = `
-                        <h3>${gem.name}</h3>
-                        <p>Type: ${gem.type}</p>
-                        <p>Description: ${gem.description}</p>
-                    `;
-                    gemsList.appendChild(gemDiv);
-                });
-            })
-            .catch(error => console.error('Error fetching gems:', error));
+    fetch('https://localhost:3000/gems')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Fetched gems:', data); // Log the fetched data
+            const gemsList = document.getElementById('gems-container');
+            data.forEach(gem => {
+                const gemDiv = document.createElement('div');
+                gemDiv.innerHTML = `
+                    <div class="flex-box" style="min-width:100%;max-width: calc(33.333% - 20px)">
+                        <img src="Pictures/generic_travel.png">
+                        <!--save button-->
+                    <button class="save-button" href="go-to-somehwere-else">
+                        <ion-icon name="bookmark-sharp" size="large" style="border-color: #000;"></ion-icon>
+                    </button>
+                        <div class="hgb-content">
+                            <h3>${gem.name}</h3>
+                            <p style="font-weight: bold;">${gem.type}</p>
+                            <hr>
+                            <p>${gem.description}</p>
+                        </div>
+                    </div>
+                `;
+                gemsList.appendChild(gemDiv);
+            });
+        })
+        .catch(error => console.error('Error fetching gems:', error));
     </script>
 </body>
 </html>

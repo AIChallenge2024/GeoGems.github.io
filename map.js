@@ -33,6 +33,7 @@ async function initMap() {
     fetch('https://localhost:3000/gems')
         .then(response => response.json())
         .then(data => {
+            console.log('Fetched gems:', data); // Log the fetched data
             data.forEach(gem => {
                 addMarker({ coordinates: gem.coordinates, iconImage: gem_icon, content: `<h3>${gem.name}</h3>` });
             });
@@ -57,7 +58,7 @@ async function initMap() {
                     const city = addressComponents.find(component => component.types.includes("locality"))?.long_name || "Unknown";
                     const country = addressComponents.find(component => component.types.includes("country"))?.long_name || "Unknown";
                     infoContent.innerHTML = `
-                        <h3 data-translate id="underline">${city}, ${country}</h3>
+                        <h3 id="underline">${city}, ${country}</h3>
                         <button id="add-gem-btn">Add Hidden Gem</button>
                     `;
 
@@ -94,19 +95,23 @@ async function initMap() {
         const gemType = document.getElementById("gem-type").value;
         const gemDescription = document.getElementById("gem-description").value;
 
-        const formData = new FormData();
-        formData.append('name', gemName);
-        formData.append('type', gemType);
-        formData.append('description', gemDescription);
-        formData.append('coordinates', JSON.stringify(clickedCoordinates));
+        const gemData = {
+            name: gemName,
+            type: gemType,
+            description: gemDescription,
+            coordinates: clickedCoordinates
+        };
 
         fetch('https://localhost:3000/add-gem', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gemData)
         })
         .then(response => response.text())
         .then(data => {
-            console.log(data);
+            console.log('Gem added:', data); // Log the response
             // Add marker to the map
             addMarker({ coordinates: clickedCoordinates, iconImage: gem_icon, content: `<h3>${gemName}</h3>` });
 
@@ -126,7 +131,7 @@ function deleteMarker(lat, lng) {
     })
     .then(response => response.text())
     .then(data => {
-        console.log(data);
+        console.log('Gem deleted:', data); // Log the response
         // Reload the map to reflect the changes
         initMap();
     })
