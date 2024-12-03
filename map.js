@@ -47,16 +47,6 @@ async function initMap() {
 
         const infoDiv = document.getElementById("info");
         const infoContent = document.getElementById("info_content");
-<<<<<<< HEAD
-        infobox.style.display = "block"
-        infoContent.innerHTML = `
-          <h2>Location Details</h2>
-          <p>Latitude: ${lat}</p>
-          <p>Longitude: ${lng}</p>
-          <p>Additional information can go here.</p>
-        `;
-      });
-=======
         infoContent.innerHTML = `<div id="info_content">This will take a couple of seconds...</div>`;
         infoDiv.style.display = "block";
 
@@ -90,7 +80,6 @@ async function initMap() {
             }
         });
     });
->>>>>>> a7ba07911782700d78ab0cabc25af076de45e777
 
     document.getElementById("close_btn").addEventListener("click", () => {
         document.getElementById("info").style.display = "none";
