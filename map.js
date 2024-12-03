@@ -1,115 +1,111 @@
+let clickedCoordinates = {};
 
-async function getSummary(locationName) {
-  const apiUrl = '';
-  const apiKey = 'api-key'; //pi key goes here but its not letting me push because git violation
+async function initMap() {    
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 13,
+        center: { lat: 37.98450557467865, lng: 23.7275026629592 }
+    });
 
-  const requestBody = {
-    model: 'text-davinci-003', 
-    promt: `Summarize this place: ${locationName}`,
-    max_words: 100,
-  }
-
-  const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({ text: locationName })
-  });
-
-  const data = await response.json();
-
-  if(data.choices && data.choices.lenght >0) {
-    return data.choices[0].text.trim();
-  } else{
-  return data.summary || 'No summary available.';
-  }
-}
-
-function initMap(){
-    //Map Options
-    var options = {
-        zoom:13,
-        center:{lat:37.98450557467865, lng:23.7275026629592}
-    }
-    //New Map
-    var map = new 
-    google.maps.Map(document.getElementById("map"), options);
-
-    //Add Marker Function
-    function addMarker(props){
+    function addMarker(props) {
         var marker = new google.maps.Marker({
-            position:props.coordinates,
-            map:map,
+            position: props.coordinates,
+            map: map,
+            icon: props.iconImage,
         });
 
-        //Check if icon and content were declared in function
-        if (props.iconImage){
-            marker.setIcon(props.iconImage)
-        }
-        if (props.content){
+        if (props.content) {
             var infoWindow = new google.maps.InfoWindow({
-                content:props.content
-            })
-        
-            marker.addListener("click", function(){
+                content: props.content + `<button onclick="deleteMarker('${props.coordinates.lat}', '${props.coordinates.lng}')">Delete</button>`
+            });
+
+            marker.addListener("click", function() {
                 infoWindow.open(map, marker);
-            })
+            });
         }
     }
+
     const gem_icon = {
-        url: "https://www.clker.com/cliparts/5/8/7/3/1566560070407030839map-marker-purple.png", // URL to the image
+        url: "https://www.clker.com/cliparts/5/8/7/3/1566560070407030839map-marker-purple.png",
         scaledSize: new google.maps.Size(28, 40)
-      };
+    };
 
-    const touristic_icon = {
-        url: "https://www.pacificcarrentals.com/wp-content/uploads/2020/02/Location.png", // URL to the image
-        scaledSize: new google.maps.Size(28, 40)
-      };
-    addMarker({coordinates:{lat:37.97251240995257, lng:23.72807410862482},iconImage:gem_icon, content:"<h3>Anafiotika</h3>"});
-    addMarker({coordinates:{lat:37.977138803582775, lng:23.72290740873045},iconImage:gem_icon, content:"<h3>Ta Karamanlidika tou Fani</h3>"});
-    addMarker({coordinates:{lat:37.97149029175632, lng:23.725724793151805}, iconImage:touristic_icon, content:"<h3>Acropolis</h3>"});
-    
-    //Listen for click on map
-    map.addListener("click", (event) => {
-        const lat = event.latLng.lat();
-        const lng = event.latLng.lng();
-        const infobox = document.getElementById("info");
+    // Fetch hidden gems from the server
+    fetch('https://localhost:3000/gems')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(gem => {
+                addMarker({ coordinates: gem.coordinates, iconImage: gem_icon, content: `<h3>${gem.name}</h3>` });
+            });
+        })
+        .catch(error => console.error('Error fetching gems:', error));
+
+    map.addListener("click", async (event) => {
+        const latitude = event.latLng.lat();
+        const longitude = event.latLng.lng();
+        clickedCoordinates = { lat: latitude, lng: longitude };
+
+        const infoDiv = document.getElementById("info");
         const infoContent = document.getElementById("info_content");
-        
-        // Use reverse geocoding to get the place name from the coordinates
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ location: { lat: lat, lng: lng } }, async function (results, status) {
-            if (status === 'OK' && results[0]) {
-                const locationName = results[0].formatted_address; // Get the location name
-                // Fetch summary using the location name
-                const summary = await getSummary(locationName);
-
-        
-        
-                infobox.style.display = "block"
-                infoContent.innerHTML = `
-                  <h2>Location Details</h2>
-                  <p>Latitude: ${lat}</p>
-                  <p>Longitude: ${lng}</p>
-                  <p><strong>Place:</strong> ${locationName}</p>
-                  <p><strong>Summary:</strong> ${summary}</p>
-                  <p>Additional information can go here.</p>
-                `;
-            } else {
-              infobox.style.display = "block";
-              infoContent.innerHTML = `
-                  <h2>Location Details</h2>
-                  <p>Latitude: ${lat}</p>
-                  <p>Longitude: ${lng}</p>
-                  <p>Unable to retrieve location name.</p>
-              `;
-            }
-        });
+        infobox.style.display = "block"
+        infoContent.innerHTML = `
+          <h2>Location Details</h2>
+          <p>Latitude: ${lat}</p>
+          <p>Longitude: ${lng}</p>
+          <p>Additional information can go here.</p>
+        `;
       });
 
-      document.getElementById("close_btn").addEventListener("click", () => {
-        document.getElementById("info").style.display = "none"; // Hide the info div
-      });
+    document.getElementById("close_btn").addEventListener("click", () => {
+        document.getElementById("info").style.display = "none";
+    });
+
+    document.getElementById("cancel-btn").addEventListener("click", () => {
+        document.getElementById("add-gem-form").style.display = "none";
+    });
+
+    document.getElementById("gem-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const gemName = document.getElementById("gem-name").value;
+        const gemType = document.getElementById("gem-type").value;
+        const gemDescription = document.getElementById("gem-description").value;
+
+        const formData = new FormData();
+        formData.append('name', gemName);
+        formData.append('type', gemType);
+        formData.append('description', gemDescription);
+        formData.append('coordinates', JSON.stringify(clickedCoordinates));
+
+        fetch('https://localhost:3000/add-gem', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            // Add marker to the map
+            addMarker({ coordinates: clickedCoordinates, iconImage: gem_icon, content: `<h3>${gemName}</h3>` });
+
+            document.getElementById("add-gem-form").style.display = "none";
+        })
+        .catch(error => console.error('Error:', error));
+    });
 }
+
+function deleteMarker(lat, lng) {
+    fetch('https://localhost:3000/delete-gem', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ lat: parseFloat(lat), lng: parseFloat(lng) })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        // Reload the map to reflect the changes
+        initMap();
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+window.onload = initMap;

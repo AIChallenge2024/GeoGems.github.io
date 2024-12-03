@@ -8,17 +8,22 @@
     <link rel="icon" href="https://avatars.githubusercontent.com/u/188487384?s=400&u=47e89d2ae74714e87930889b618f5e64d41af4fa&v=4" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="map.css">
-</head>
+    <script src="apikey.js"></script>
+    <script>
+        document.write('<script src="' + apikey + '"async defer><\/script>');
+    </script>
+    <script src="map.js"></script> 
+    </head>
 <body>
     <nav class="navbar">
         <input type="checkbox" id="check">
         <label for="check" class="checkbtn">
             <i class="fas fa-bars"></i>
         </label>
-        <img class="logo" src="Pictures/logo_with_title.png" alt = logo style="width:75px;height:80px;margin-left: 50px;"></img>
+        <img class="logo" src="Pictures/logo_with_title.png" alt = logo style="width:75px;height:80px;margin-left: 50px;"/>
         <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="map.html">Map</a></li>
+            <li><a data-translate href="home.html">Home</a></li>
+            <li data-translate><a href="map.html">Map</a></li>
             <li><a href="hidden_gems.html">Hidden Gems</a></li>
             <li><a href="about_us.html">About us</a></li>
             <li><a href="log_in.html" class="purple_btn">Log in</a></li>
@@ -29,13 +34,21 @@
         <div id="map"></div>
         <div id="info">
             <button id="close_btn">&times;</button>
-            <div id="info_content">Click on the map to see details here.</div>
+            <div data-translate id="info_content">This will take a couple of seconds...</div>
+        </div>
+        <div id="add-gem-form" style="display:none;">
+            <h3>Add Hidden Gem</h3>
+            <form id="gem-form">
+                <label for="gem-name">Name:</label>
+                <input type="text" id="gem-name" name="gem-name" required><br>
+                <label for="gem-type">Type:</label>
+                <input type="text" id="gem-type" name="gem-type" required><br>
+                <label for="gem-description">Description:</label>
+                <textarea id="gem-description" name="gem-description" required></textarea><br>
+                <button type="submit">Submit</button>
+            </form>
+            <button id="cancel-btn">Cancel</button>
         </div>
     </div>
-<script src="apikey.js"></script>
-<script>
-    document.write('<script src="' + apikey + '" defer><\/script>');
-</script>
-<script src="map.js"></script> 
 </body>
 </html>
