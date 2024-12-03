@@ -35,6 +35,7 @@ nav ul li{
 nav ul li a{
     color: white;
     font-size: 17px;
+    font-weight: 500;
     padding: 7px 13px;
     border-radius: 3px;
 }
