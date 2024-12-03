@@ -21,7 +21,7 @@
   right: 0;
   height: 38.3rem;
   width: 30%;
-  background-color: #D9EEFF;
+  background-color: #c7e6ff;
   border:5px solid black;
   padding: 10px;
   border-left: 1px solid #ccc;
@@ -57,4 +57,39 @@
 
 #underline{
   text-decoration: underline;
+}
+
+#add-gem-form {
+  background-color: #3A6EA5; /* Blue background */
+  border-radius: 15px; /* Rounded corners */
+  padding: 20px;
+  color: white;
+  width: 25rem;
+  margin: auto;
+}
+
+#gem-form label, #gem-form input, #gem-form textarea {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#gem-form input, #gem-form textarea {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+}
+
+#gem-form button, #cancel-btn, #add-gem-btn{
+  background-color: #5BC0EB; /* Darker blue for buttons */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#gem-form button:hover, #cancel-btn:hover, #add-gem-btn:hover{
+  background-color: #0091ff; /* Even darker blue on hover */
 }

@@ -33,6 +33,7 @@ async function initMap() {
     fetch('https://localhost:3000/gems')
         .then(response => response.json())
         .then(data => {
+            console.log('Fetched gems:', data); // Log the fetched data
             data.forEach(gem => {
                 addMarker({ coordinates: gem.coordinates, iconImage: gem_icon, content: `<h3>${gem.name}</h3>` });
             });
@@ -46,6 +47,7 @@ async function initMap() {
 
         const infoDiv = document.getElementById("info");
         const infoContent = document.getElementById("info_content");
+<<<<<<< HEAD
         infobox.style.display = "block"
         infoContent.innerHTML = `
           <h2>Location Details</h2>
@@ -54,6 +56,41 @@ async function initMap() {
           <p>Additional information can go here.</p>
         `;
       });
+=======
+        infoContent.innerHTML = `<div id="info_content">This will take a couple of seconds...</div>`;
+        infoDiv.style.display = "block";
+
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
+            if (status === "OK") {
+                if (results[0]) {
+                    const addressComponents = results[0].address_components;
+                    const city = addressComponents.find(component => component.types.includes("locality"))?.long_name || "Unknown";
+                    const country = addressComponents.find(component => component.types.includes("country"))?.long_name || "Unknown";
+                    infoContent.innerHTML = `
+                        <h3 id="underline">${city}, ${country}</h3>
+                        <button id="add-gem-btn">Add Hidden Gem</button>
+                    `;
+
+                    document.getElementById("add-gem-btn").addEventListener("click", () => {
+                        document.getElementById("add-gem-form").style.display = "block";
+                        infoDiv.style.display = "none";
+                    });
+                } else {
+                    infoContent.innerHTML = `
+                        <h2>Location Details</h2>
+                        <p>No results found</p>
+                    `;
+                }
+            } else {
+                infoContent.innerHTML = `
+                    <h2>Location Details</h2>
+                    <p>Geocoder failed due to: ${status}</p>
+                `;
+            }
+        });
+    });
+>>>>>>> a7ba07911782700d78ab0cabc25af076de45e777
 
     document.getElementById("close_btn").addEventListener("click", () => {
         document.getElementById("info").style.display = "none";
@@ -69,19 +106,23 @@ async function initMap() {
         const gemType = document.getElementById("gem-type").value;
         const gemDescription = document.getElementById("gem-description").value;
 
-        const formData = new FormData();
-        formData.append('name', gemName);
-        formData.append('type', gemType);
-        formData.append('description', gemDescription);
-        formData.append('coordinates', JSON.stringify(clickedCoordinates));
+        const gemData = {
+            name: gemName,
+            type: gemType,
+            description: gemDescription,
+            coordinates: clickedCoordinates
+        };
 
         fetch('https://localhost:3000/add-gem', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(gemData)
         })
         .then(response => response.text())
         .then(data => {
-            console.log(data);
+            console.log('Gem added:', data); // Log the response
             // Add marker to the map
             addMarker({ coordinates: clickedCoordinates, iconImage: gem_icon, content: `<h3>${gemName}</h3>` });
 
@@ -101,7 +142,7 @@ function deleteMarker(lat, lng) {
     })
     .then(response => response.text())
     .then(data => {
-        console.log(data);
+        console.log('Gem deleted:', data); // Log the response
         // Reload the map to reflect the changes
         initMap();
     })
