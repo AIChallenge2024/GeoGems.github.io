@@ -77,9 +77,9 @@
 
 /*Buttons for categories of hidden gems*/
 
-.button-container {
+.buttons {
     display: flex; /* Makes the buttons align horizontally */
-    justify-content: space-around; /* Adds even spacing between buttons */
+    justify-content: center; /* Adds even spacing between buttons */
     gap: 0px; /* Adds a consistent gap between buttons */
     padding-top: 50px; /* Brings everything down the page */
     padding-bottom: -500px;
@@ -89,28 +89,81 @@
   }
 
 
-.rounded-button {
-    padding: 10px 20px;
+.button-value {
+    border: 2px solid #65558F;
+    padding: 1em 2.2em;
+    border-radius: 3em;
+    background-color: transparent;
+    color: #65558F;
+    cursor: pointer;
+    margin-left: 8em;
+    /*padding: 10px 20px;
     background-color: #65558F; 
     color: white;
     border: none;
     border-radius: 10px; /* Adjust the value for more or less rounding */
-    margin: 0;
-    cursor: pointer;
-  }
-  
-  .rounded-button:hover {
-    background-color: #433468; /* Darker purple for hover effect */
+    /*margin: 0;
+    cursor: pointer;*/
   }
 
+.active {
+    background-color: #65558F;
+    color: #fff;
+}
+
+.card {
+    background-color: #ffffff;
+    max-width: 18em;
+    margin-top: 1em;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 1em 2em 2.5em rgba(1, 2, 68, 0.08);
+}
+  .button-value:hover {
+    background-color: #65558F; /* Darker purple for hover effect */
+    color: #fff;
+  }
+
+/*Search*/
+
+.wrapper  {
+    width: 95%;
+    margin: 0 auto;
+}
+
+#search-container {
+    margin: 1em 0;
+    margin-left: 11.2em;
+  }
+  #search-container input {
+    background-color: transparent;
+    width: 40%;
+    border-bottom: 2px solid #110f29;
+    padding: 1em 0.3em;
+  }
+  #search-container input:focus {
+    border-bottom-color: #65558F;
+  }
+  #search-container button {
+    padding: 1em 2em;
+    margin-left: 1em;
+    background-color: #65558F;
+    color: #ffffff;
+    border-radius: 5px;
+    margin-top: 0.5em;
+  }
+
+  
+    #search-container button:hover {
+        background-color: #453a5f;
+    }   
 /*Save button*/
 
 .save-button {
     position: absolute;
     transform: translate(-120%, 20%); /* Center the button */
     background-color: rgb(255, 255, 255);
-    color: rgb(0, 0, 0);
-    border-color: none;
+    color: #65558F;
     height: 50px;
     width: 50px;
     display:inline-flex;
@@ -123,5 +176,5 @@
 }
 
 .save-button:hover {
-    background-color: #bdbdbd; /* Darker grey for hover effect */
+    color: #453a5f; /* Darker grey for hover effect */
   }
