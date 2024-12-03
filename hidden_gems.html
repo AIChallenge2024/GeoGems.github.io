@@ -112,20 +112,7 @@
                         <hr>
                         <p>Nestled at the north slope of the Acropolis, Anafiotika is one of Athens’ most scenic neighborhoods. Lined with white-washed houses resembling the Cycladic architecture design, this district looks nothing like the Greek capital.</p>
                     </div>
-                </div>  
-                <div class="flex-box">
-                    <img src="Pictures/anafiotika.png">
-                    <!--save button-->
-                <button class="save-button" href="go-to-somehwere-else">
-                    <ion-icon name="bookmark-sharp" size="large" style="border-color: #000;"></ion-icon>
-                </button>
-                    <div class="hgb-content">
-                        <h3>Anafiotika</h3>
-                        <p style="font-weight: bold;">Nature park</p>
-                        <hr>
-                        <p>Nestled at the north slope of the Acropolis, Anafiotika is one of Athens’ most scenic neighborhoods. Lined with white-washed houses resembling the Cycladic architecture design, this district looks nothing like the Greek capital.</p>
-                    </div>
-                </div>  
+                </div>    
                 <div class="flex-box">
                     <img src="Pictures/anafiotika.png">
                     <!--save button-->
@@ -153,19 +140,18 @@
             const gemsList = document.getElementById('gems-container');
             data.forEach(gem => {
                 const gemDiv = document.createElement('div');
+                gemDiv.classList.add('flex-box'); // Add the flex-box class
                 gemDiv.innerHTML = `
-                    <div class="flex-box" style="min-width:100%;max-width: calc(33.333% - 20px)">
-                        <img src="Pictures/generic_travel.png">
-                        <!--save button-->
+                    <img src="Pictures/generic_travel.png">
+                    <!--save button-->
                     <button class="save-button" href="go-to-somehwere-else">
                         <ion-icon name="bookmark-sharp" size="large" style="border-color: #000;"></ion-icon>
                     </button>
-                        <div class="hgb-content">
-                            <h3>${gem.name}</h3>
-                            <p style="font-weight: bold;">${gem.type}</p>
-                            <hr>
-                            <p>${gem.description}</p>
-                        </div>
+                    <div class="hgb-content">
+                        <h3>${gem.name}</h3>
+                        <p style="font-weight: bold;">${gem.type}</p>
+                        <hr>
+                        <p>${gem.description}</p>
                     </div>
                 `;
                 gemsList.appendChild(gemDiv);
