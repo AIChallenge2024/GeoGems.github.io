@@ -29,17 +29,6 @@ async function initMap() {
         scaledSize: new google.maps.Size(28, 40)
     };
 
-    // Fetch hidden gems from the server
-    fetch('https://localhost:3000/gems')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Fetched gems:', data); // Log the fetched data
-            data.forEach(gem => {
-                addMarker({ coordinates: gem.coordinates, iconImage: gem_icon, content: `<h3>${gem.name}</h3>` });
-            });
-        })
-        .catch(error => console.error('Error fetching gems:', error));
-
     map.addListener("click", async (event) => {
         const latitude = event.latLng.lat();
         const longitude = event.latLng.lng();
@@ -89,53 +78,6 @@ async function initMap() {
         document.getElementById("add-gem-form").style.display = "none";
     });
 
-    document.getElementById("gem-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const gemName = document.getElementById("gem-name").value;
-        const gemType = document.getElementById("gem-type").value;
-        const gemDescription = document.getElementById("gem-description").value;
-
-        const gemData = {
-            name: gemName,
-            type: gemType,
-            description: gemDescription,
-            coordinates: clickedCoordinates
-        };
-
-        fetch('https://localhost:3000/add-gem', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(gemData)
-        })
-        .then(response => response.text())
-        .then(data => {
-            console.log('Gem added:', data); // Log the response
-            // Add marker to the map
-            addMarker({ coordinates: clickedCoordinates, iconImage: gem_icon, content: `<h3>${gemName}</h3>` });
-
-            document.getElementById("add-gem-form").style.display = "none";
-        })
-        .catch(error => console.error('Error:', error));
-    });
-}
-
-function deleteMarker(lat, lng) {
-    fetch('https://localhost:3000/delete-gem', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ lat: parseFloat(lat), lng: parseFloat(lng) })
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log('Gem deleted:', data); // Log the response
-        // Reload the map to reflect the changes
-        initMap();
-    })
-    .catch(error => console.error('Error:', error));
 }
 
 window.onload = initMap;
