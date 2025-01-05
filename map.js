@@ -1,21 +1,21 @@
 let clickedCoordinates = {};
 
-async function initMap() {    
+async function initMap() {
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 13,
         center: { lat: 37.98450557467865, lng: 23.7275026629592 }
     });
 
     function addMarker(props) {
-        var marker = new google.maps.Marker({
+        const marker = new google.maps.Marker({
             position: props.coordinates,
             map: map,
             icon: props.iconImage,
         });
 
         if (props.content) {
-            var infoWindow = new google.maps.InfoWindow({
-                content: props.content + `<button onclick="deleteMarker('${props.coordinates.lat}', '${props.coordinates.lng}')">Delete</button>`
+            const infoWindow = new google.maps.InfoWindow({
+                content: props.content
             });
 
             marker.addListener("click", function() {
@@ -29,10 +29,23 @@ async function initMap() {
         scaledSize: new google.maps.Size(28, 40)
     };
 
-    map.addListener("click", async (event) => {
+    // Add a marker for each gem loaded from PHP
+    gems.forEach(gem => {
+        addMarker({
+            coordinates: { lat: parseFloat(gem.latitude), lng: parseFloat(gem.longitude) },
+            iconImage: gem_icon,
+            content: `<h3>${gem.gem_name}</h3><p>${gem.gem_description}</p>`
+        });
+    });
+
+    map.addListener("click", (event) => {
         const latitude = event.latLng.lat();
         const longitude = event.latLng.lng();
         clickedCoordinates = { lat: latitude, lng: longitude };
+
+        // Populate the form with the latitude and longitude values
+        document.getElementById("latitude").value = latitude;
+        document.getElementById("longitude").value = longitude;
 
         const infoDiv = document.getElementById("info");
         const infoContent = document.getElementById("info_content");
@@ -77,7 +90,6 @@ async function initMap() {
     document.getElementById("cancel-btn").addEventListener("click", () => {
         document.getElementById("add-gem-form").style.display = "none";
     });
-
 }
 
 window.onload = initMap;
