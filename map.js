@@ -1,55 +1,73 @@
-let clickedCoordinates = {};
+let clickedCoordinates = {}; 
 
 async function initMap() {
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 13,
-        center: { lat: 37.98450557467865, lng: 23.7275026629592 }
+        center: { lat: 37.98450557467865, lng: 23.7275026629592 },
     });
-
+    
+    // Function to add markers
     function addMarker(props) {
-        const marker = new google.maps.Marker({
+        var marker = new google.maps.Marker({
             position: props.coordinates,
             map: map,
             icon: props.iconImage,
         });
-
+    
         if (props.content) {
-            const infoWindow = new google.maps.InfoWindow({
-                content: props.content
+            var infoWindow = new google.maps.InfoWindow({
+                content: `${props.content}
+                <form method="POST" action="map.php" style="display:inline;">
+                    <input type="hidden" name="delete" value="true">
+                    <input type="hidden" name="latitude" value="${props.coordinates.lat}">
+                    <input type="hidden" name="longitude" value="${props.coordinates.lng}">
+                    <button type="submit">Delete</button>
+                </form>`
             });
-
+    
             marker.addListener("click", function() {
                 infoWindow.open(map, marker);
             });
         }
-    }
+    }    
 
+    // Marker icon for gems
     const gem_icon = {
-        url: "https://www.clker.com/cliparts/5/8/7/3/1566560070407030839map-marker-purple.png",
+        url: "Pictures/map_marker.png",
         scaledSize: new google.maps.Size(28, 40)
     };
 
-    // Add a marker for each gem loaded from PHP
-    gems.forEach(gem => {
-        addMarker({
-            coordinates: { lat: parseFloat(gem.latitude), lng: parseFloat(gem.longitude) },
-            iconImage: gem_icon,
-            content: `<h3>${gem.gem_name}</h3><p>${gem.gem_description}</p>`
+    // Add markers for gems loaded from PHP
+    if (Array.isArray(gems)) {
+        gems.forEach(gem => {
+            addMarker({ coordinates: { lat: parseFloat(gem.latitude), lng: parseFloat(gem.longitude) },
+                iconImage: gem_icon,
+                content: `<h3>${gem.gem_name}</h3>`,
+            });
         });
-    });
+    } else {
+        console.error("No gems available or invalid data.");
+    }
 
-    map.addListener("click", (event) => {
+    // Add marker and populate form on map click
+    map.addListener("click", async (event) => {
         const latitude = event.latLng.lat();
         const longitude = event.latLng.lng();
-        clickedCoordinates = { lat: latitude, lng: longitude };
 
-        // Populate the form with the latitude and longitude values
-        document.getElementById("latitude").value = latitude;
-        document.getElementById("longitude").value = longitude;
+        // Populate hidden fields
+        const latInput = document.getElementById("latitude");
+        const lngInput = document.getElementById("longitude");
+        latInput.value = latitude;
+        lngInput.value = longitude;
+
+        console.log("Latitude set to:", latInput.value);
+        console.log("Longitude set to:", lngInput.value);
+
+        clickedCoordinates = { lat: latitude, lng: longitude };
 
         const infoDiv = document.getElementById("info");
         const infoContent = document.getElementById("info_content");
-        infoContent.innerHTML = `<div id="info_content">This will take a couple of seconds...</div>`;
+        infoContent.innerHTML = `Loading location details...`;
         infoDiv.style.display = "block";
 
         const geocoder = new google.maps.Geocoder();
@@ -57,8 +75,8 @@ async function initMap() {
             if (status === "OK") {
                 if (results[0]) {
                     const addressComponents = results[0].address_components;
-                    const city = addressComponents.find(component => component.types.includes("locality"))?.long_name || "Unknown";
-                    const country = addressComponents.find(component => component.types.includes("country"))?.long_name || "Unknown";
+                    const city = addressComponents.find((comp) => comp.types.includes("locality"))?.long_name || "Unknown";
+                    const country = addressComponents.find((comp) => comp.types.includes("country"))?.long_name || "Unknown";
                     infoContent.innerHTML = `
                         <h3 id="underline">${city}, ${country}</h3>
                         <button id="add-gem-btn">Add Hidden Gem</button>
@@ -69,24 +87,31 @@ async function initMap() {
                         infoDiv.style.display = "none";
                     });
                 } else {
-                    infoContent.innerHTML = `
-                        <h2>Location Details</h2>
-                        <p>No results found</p>
-                    `;
+                    infoContent.innerHTML = `<p>No results found for this location.</p>`;
                 }
             } else {
-                infoContent.innerHTML = `
-                    <h2>Location Details</h2>
-                    <p>Geocoder failed due to: ${status}</p>
-                `;
+                infoContent.innerHTML = `<p>Geocoder failed: ${status}</p>`;
             }
         });
     });
 
+    // Validate form submission
+    document.getElementById("gem-form").addEventListener("submit", (e) => {
+        const latitude = document.getElementById("latitude").value;
+        const longitude = document.getElementById("longitude").value;
+
+        if (!latitude || !longitude) {
+            e.preventDefault(); // Prevent form submission
+            alert("Please click on the map to select a location before submitting.");
+        }
+    });
+
+    // Close info panel
     document.getElementById("close_btn").addEventListener("click", () => {
         document.getElementById("info").style.display = "none";
     });
 
+    // Cancel adding a gem
     document.getElementById("cancel-btn").addEventListener("click", () => {
         document.getElementById("add-gem-form").style.display = "none";
     });

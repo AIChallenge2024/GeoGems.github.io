@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Database connection
 include 'mysql_info.php';
 
@@ -9,23 +13,48 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+// Handle form submission for gem addition
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['gem-name']) && isset($_POST['gem-type']) && isset($_POST['gem-description'])) {
     $gem_name = $conn->real_escape_string($_POST['gem-name']);
     $gem_type = $conn->real_escape_string($_POST['gem-type']);
     $gem_description = $conn->real_escape_string($_POST['gem-description']);
     $latitude = $conn->real_escape_string($_POST['latitude']);
     $longitude = $conn->real_escape_string($_POST['longitude']);
 
+    if (!$latitude || !$longitude) {
+        die("Latitude or longitude not received correctly. POST data: " . print_r($_POST, true));
+    }
+
     $sql = "INSERT INTO hidden_gems (gem_name, gem_type, gem_description, latitude, longitude)
             VALUES ('$gem_name', '$gem_type', '$gem_description', '$latitude', '$longitude')";
 
     if ($conn->query($sql) === TRUE) {
-        // Redirect to the map page to avoid resubmission
-        header("Location: /map.php");
-        exit();
+        echo "<script>alert('Record inserted successfully.');</script>";
     } else {
         echo "Error: " . $conn->error;
+    }
+}
+
+// Handle gem deletion
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete']) && $_POST['delete'] === 'true') {
+    $latitude = $conn->real_escape_string($_POST['latitude']);
+    $longitude = $conn->real_escape_string($_POST['longitude']);
+
+    if (!$latitude || !$longitude) {
+        echo "<script>alert('Latitude or longitude not received correctly.');</script>";
+    } else {
+        $sql = "DELETE FROM hidden_gems WHERE latitude = ? AND longitude = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ss", $latitude, $longitude);
+
+        if ($stmt->execute()) {
+            // After deleting, reload the page to reflect the changes
+            echo "<script>alert('Gem deleted successfully!'); window.location.href='map.php';</script>";
+        } else {
+            echo "<script>alert('Failed to delete gem.'); window.location.href='map.php';</script>";
+        }
+
+        $stmt->close();
     }
 }
 
@@ -39,6 +68,8 @@ if ($result && $result->num_rows > 0) {
         $gems[] = $row;
     }
 }
+
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -58,8 +89,7 @@ if ($result && $result->num_rows > 0) {
         // Pass PHP data to JavaScript
         const gems = <?php echo json_encode($gems); ?>;
     </script>
-    <script src="map.js" defer></script>
-    <script src="map.js" defer></script>
+    <script src="map.js?v=<?=filemtime('map.js');?>" defer></script>
 </head>
 <body>
     <nav class="navbar">
