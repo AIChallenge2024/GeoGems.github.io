@@ -21,7 +21,7 @@ async function initMap() {
                     <input type="hidden" name="delete" value="true">
                     <input type="hidden" name="latitude" value="${props.coordinates.lat}">
                     <input type="hidden" name="longitude" value="${props.coordinates.lng}">
-                    <button type="submit">Delete</button>
+                    <button id="delete-gem-btn" type="submit">Delete</button>
                 </form>`
             });
     

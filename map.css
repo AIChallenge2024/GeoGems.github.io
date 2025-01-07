@@ -80,7 +80,7 @@
   border: none;
 }
 
-#gem-form button, #cancel-btn, #add-gem-btn{
+#gem-form button, #cancel-btn, #add-gem-btn, #delete-gem-btn {
   background-color: #5BC0EB; /* Darker blue for buttons */
   color: white;
   border: none;
@@ -90,6 +90,10 @@
   margin-top: 10px;
 }
 
-#gem-form button:hover, #cancel-btn:hover, #add-gem-btn:hover{
+#delete-gem-btn {
+  padding: 5px 10px;
+}
+
+#gem-form button:hover, #cancel-btn:hover, #add-gem-btn:hover, #delete-gem-btn:hover{
   background-color: #0091ff; /* Even darker blue on hover */
 }

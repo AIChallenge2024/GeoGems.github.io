@@ -1,3 +1,17 @@
+<?php
+// Database connection
+include 'mysql_info.php';
+
+$conn = new mysqli($hostname, $username, $password, $db_name);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Fetch gems from the database
+$sql = "SELECT gem_name, gem_type, gem_description FROM hidden_gems";
+$result = $conn->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -19,7 +33,7 @@
         <ul>
             <li><a href="home.html">Home</a></li>
             <li><a href="map.php">Map</a></li>
-            <li><a href="hidden_gems.html">Hidden Gems</a></li>
+            <li><a href="hidden_gems.php">Hidden Gems</a></li>
             <li><a href="about_us.html">About us</a></li>
             <li><a href="log_in.html" class="purple_btn">Log in</a></li>
             <li><a href="sign_up.html" class="purple_btn">Sign up</a></li>
@@ -125,7 +139,29 @@
                         <hr>
                         <p>The National Museum of Contemporary Art (EMST) in Athens showcases modern works in a striking building, promoting dialogue through diverse exhibitions.</p>
                     </div>
-                </div>   
+                </div>  
+                <?php
+                if ($result && $result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $name = htmlspecialchars($row['gem_name']);
+                        $type = htmlspecialchars($row['gem_type']);
+                        $description = htmlspecialchars($row['gem_description']);
+                        echo '
+                        <div class="flex-box">
+                            <img src="Pictures/generic_travel.png" alt="Gem Image">
+                            <button class="save-button" href="go-to-somewhere-else">
+                                <ion-icon name="bookmark-sharp" size="large" style="border-color: #000;"></ion-icon>
+                            </button>
+                            <div class="hgb-content">
+                                <h3>' . $name . '</h3>
+                                <p style="font-weight: bold;">' . $type . '</p>
+                                <hr>
+                                <p>' . $description . '</p>
+                            </div>
+                        </div>';
+                    }
+                }
+                ?>
             </div> 
     </section>
     <!-- button library thing-->
