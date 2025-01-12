@@ -121,7 +121,7 @@ $conn->close();
                 <label for="gem-type">Type:</label>
                 <input type="text" id="gem-type" name="gem-type" required><br>
                 <label for="gem-description">Description:</label>
-                <textarea id="gem-description" name="gem-description" required></textarea><br>
+                <textarea id="gem-description" name="gem-description" required  maxlength="250"></textarea><br>
                 <input type="hidden" id="latitude" name="latitude">
                 <input type="hidden" id="longitude" name="longitude">
                 <button type="submit">Submit</button>
