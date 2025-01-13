@@ -2,10 +2,10 @@
   "manifest_version": 3,
   "name": "Map Click City Detector",
   "version": "1.0",
-  "description": "A Chrome extension that detects the city based on map clicks using the Google Maps API.",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "aiLanguageModelOriginTrial"
   ],
   "background": {
     "service_worker": "background.js",
@@ -19,5 +19,8 @@
   ],
   "action": {
     "default_popup": "map.html"
+  },
+  "origin_trial": {
+    "token": "AncfzvMAGyaJCs8pk+7Bri2KsYREXB2P5GiBVSp6PuU4JmjfjvvzToxBdgiQ5xPuFGH/YKRD0jtqTArMzdIFbwIAAABUeyJvcmlnaW4iOiJodHRwczovL3d3dzo0NDMiLCJmZWF0dXJlIjoiQUlQcm9tcHRBUElGb3JFeHRlbnNpb24iLCJleHBpcnkiOjE3NjA0ODYzOTl9"
   }
 }
