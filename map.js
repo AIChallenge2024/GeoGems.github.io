@@ -76,7 +76,7 @@ async function initMap() {
                 const city = addressComponents.find((comp) => comp.types.includes("locality"))?.long_name || "Unknown";
                 const country = addressComponents.find((comp) => comp.types.includes("country"))?.long_name || "Unknown";
     
-                let aiMessage = `<p>Prompt API not available for use. The AI feature only works in Google Chrome's newest version (64-bit) with the 'Prompt API' and the "Experimental Web Platform Features" flags enabled. Enable these flags in chrome://flags if you would like to use AI-powered features. This is because the AI used is from the Google Chrome's Preview Program (it is testing AI specifically used for Google Chrome's Built-in AI Challenge)</p>`;
+                let aiMessage = `<p>Prompt API not available for use. The AI feature only works in Google Chrome's newest version (64-bit) with the 'Prompt API for Gemini Nano' flag enabled. Enable this flag in chrome://flags if you would like to use AI-powered features. This is because the AI used is from the Google Chrome's Preview Program (it is testing AI specifically used for Google Chrome's Built-in AI Challenge)</p>`;
                 if ('ai' in self && 'languageModel' in self.ai) {
                     const capabilities = await self.ai.languageModel.capabilities();
                     if (capabilities.available === "readily" || capabilities.available === "after-download") {
